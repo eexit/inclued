@@ -1,8 +1,12 @@
 # Inclued
 
+Just a graph generation class to use with the [inclued](http://pecl.php.net/package/inclued "inclued") PHP PECL package.
+Have fun using it and improving it!
+
 ## Usage
 
 This little class allows you to generate kind of graphic :
+
 ![Inclued graphtree](http://blog.eexit.net/wp-content/uploads/2010/02/inclued2.png "Inclued graph example")
 
 ### Basic example
@@ -94,7 +98,6 @@ If you want to give another name to file, specify it as parameter or if you want
          ->genGraph();
     ?>
 
-- - -
 ## Changelog
 
 ### 2010-02-27 — Initial release
@@ -102,4 +105,5 @@ If you want to give another name to file, specify it as parameter or if you want
 ## Contact
 
 Joris Berthelot <admin@eexit.net>
+
 [http://www.eexit.net](http://www.eexit.net "http://www.eexit.net")
