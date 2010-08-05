@@ -5,102 +5,38 @@ Have fun using it and improving it!
 
 ## Usage
 
+Firstfully, move **gengraph.php** in your default include path (/*/lib/php).
 This little class allows you to generate kind of graphic :
 
-![Inclued graphtree](http://blog.eexit.net/wp-content/uploads/2010/02/inclued2.png "Inclued graph example")
+![Inclued graphtree](http://www.eexit.net/projects/inclued/inclued.png "Inclued graph example")
 
 ### Basic example
 
     <?php
-    require 'My_Class.php';
-    require_once 'Inclued.php';
-    $foo = new \inclued\Inclued;
-    $foo->genClue();
-    ?>
-
-This will output
-
-    array
-      'request' => 
-        array
-          '_COOKIE' => 
-            array
-              empty
-      'includes' => 
-        array
-          0 => 
-            array
-              'operation' => string 'include' (length=7)
-              'op_type' => int 2
-              'filename' => string 'My_Class.php' (length=12)
-              'opened_path' => string '/htdocs/lab/My_Class.php' (length=24)
-              'fromfile' => string '/htdocs/lab/Inclued/inclued_test.php' (length=36)
-              'fromline' => int 10
-          1 => 
-            array
-              'operation' => string 'require_once' (length=12)
-              'op_type' => int 16
-              'filename' => string 'Inclued.php' (length=11)
-              'opened_path' => string '/htdocs/lab/Inclued/Inclued.php' (length=32)
-              'fromfile' => string '/htdocs/lab/Inclued/inclued_test.php' (length=36)
-              'fromline' => int 28
-      'inheritance' => 
-        array
-          empty
-      'classes' => 
-        array
-          0 => 
-            array
-              'name' => string 'My_Class' (length=8)
-              'filename' => string '/htdocs/lab/My_Class.php' (length=24)
-              'line' => int 26
-          1 => 
-            array
-              'name' => string 'inclued\Inclued_Exception' (length=25)
-              'filename' => string '/htdocs/lab/Inclued/Inclued.php' (length=32)
-              'line' => int 23
-              'parent' => 
-                array
-                  'name' => string 'Exception' (length=9)
-                  'internal' => boolean true
-          2 => 
-            array
-              'name' => string 'inclued\Inclued' (length=15)
-              'filename' => string '/htdocs/lab/Inclued/Inclued.php' (length=32)
-              'line' => int 26
-
-To **do not** include the Inclued file itself, add `false` parameter to `Inclued::genClue()`.
-Once you have your datas, generate your grapth :
-
-    <?php
-     require 'My_Class.php';
-     require_once 'Inclued.php';
-     $foo = new \inclued\Inclued;
-     $foo->genClue()
+    require_once '../listFiles.php';
+    require_once 'Inclued/Inclued.php';
+    require_once 'Inclued/Exception.php';
+    
+    $clue = new Inclued\Inclued();
+    $clue->genClue()
          ->saveClue()
          ->genGraph();
+    var_dump($clue->getClue());
     ?>
 
-This will output files :
-    * inclued.clue
-    * inclued.png
-
-If you want to give another name to file, specify it as parameter or if you want a more specific name, use PHP5.3 closures :
-
-    <?php
-     require 'My_Class.php';
-     require_once 'Inclued.php';
-     $foo = new \inclued\Inclued;
-     $foo->genClue(false)
-         ->saveClue(function($fn) {
-             return date('Y-m-d') . '_' . $fn;
-         })
-         ->genGraph();
-    ?>
+More examples on [http://www.eexit.net/projects/inclued.html](the project page "http://www.eexit.net/projects/inclued.html")
 
 ## Changelog
 
-### 2010-02-27 — Initial release
+### 2010-08-05 — Version 1.10
+    *  ADDED custom gengraph.php file in the package
+    * ADDED Exception class has now it own file
+    * ADDED parameter in Inclued::saveClue() to choose the way to compress clue datas
+    * ADDED parameter in Inclued::genGraph() to avoid printing abspath from root server
+    * MODIFIED Namespace use
+    * FIXED gengraph.php default include path if it has been modified before the instanciation of the class
+### 2010-02-27 — Version 1.00
+    * Intial release
 
 ## Contact
 
