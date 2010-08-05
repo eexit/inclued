@@ -1,50 +1,60 @@
 <?php
-/*
-* ###########
-* #__________#
-* __________#
-* ________#
-* _____###_____²xiT development
-* _________#
-* ___________#
-* #__________#
-* _#________#
-* __#______#
-* ____####
-*
-* Permission is hereby granted, free of charge, to any person obtaining a copy
-* of this software and associated documentation files (the "Software"), to deal
-* in the Software without restriction, including without limitation the rights
-* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-* copies of the Software, and to permit persons to whom the Software is
-* furnished to do so, subject to the following conditions:
-*
-* The above copyright notice and this permission notice shall be included in
-* all copies or substantial portions of the Software.
-*
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-* FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-* IN THE SOFTWARE.
-*/
-namespace inclued;
+/**
+ * Inclued
+ * 
+ * @copyright Copyright (c) 2010, Joris Berthelot
+ * @author Joris Berthelot <admin@eexit.net>
+ * @package Inclued
+ * 
+ *  ###########
+ * #__________#
+ * __________#
+ * ________#
+ * _____###_____²xiT development
+ * _________#
+ * ___________#
+ * #__________#
+ * _#________#
+ * __#______#
+ * ____####
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+ * IN THE SOFTWARE.
+ * 
+ */
 
-class Inclued_Exception extends \Exception
-{}
+namespace Inclued;
 
 /**
-*   @author Joris Berthelot <admin@eexit.net>
-*   @copyright Copyright (c) 2010, Joris Berthelot
-*   @version 1.00
-*/
+ * Inclued
+ * 
+ * @copyright Copyright (c) 2010, Joris Berthelot
+ * @author Joris Berthelot <admin@eexit.net>
+ * @since 1.00
+ * @version 1.10
+ * @package Inclued
+ */
 class Inclued
 {
     
     /**
      *  The generator filename given in the PECL package
+     * 
      *  @since 1.00
      *  @version 1.00
      */
@@ -52,13 +62,15 @@ class Inclued
     
     /**
      *  The PHP CLI command to transform the serialized data into DOT file
+     * 
      *  @since 1.00
-     *  @version 1.00
+     *  @version 1.10
      */
-    const GENERATOR_CMD = 'php %gen% -i %clue% -o ~tmp.dot';
+    const GENERATOR_CMD = 'php %gen% -d %dir% -i %clue% -o ~tmp.dot';
     
     /**
      *  The succeed PHP CLI command last message
+     * 
      *  @since 1.00
      *  @version 1.00
      */
@@ -66,6 +78,7 @@ class Inclued
     
     /**
      *  The bash command to generate PNG file from DOT file
+     * 
      *  @since 1.00
      *  @version 1.00
      */
@@ -73,6 +86,7 @@ class Inclued
     
     /**
      *  The default CLUE file
+     * 
      *  @since 1.00
      *  @version 1.00
      *  @access public
@@ -81,6 +95,7 @@ class Inclued
     
     /**
      *  The default generator file path (PHP include_path)
+     * 
      *  @since 1.00
      *  @version 1.00
      *  @access public
@@ -89,6 +104,7 @@ class Inclued
     
     /**
      *  The CLUE data
+     * 
      *  @since 1.00
      *  @version 1.00
      *  @access private
@@ -98,18 +114,23 @@ class Inclued
     /**
      *  Inclued constructor. Checks if inclued extension is loaded and activated
      *  and initializes the default generator file path
+     * 
      *  @since 1.00
      *  @version 1.00
      *  @access public
+     * 
+     *  @throws Exception
      */
     public function __construct()
     {
         if (!function_exists('inclued_get_data') || !ini_get('inclued.enabled')) {
-            throw new Inclued_Exception('inclued extension not loaded or not actived!');
+            throw new Exception('inclued extension not loaded or not activated!');
         }
         
         $paths = explode(':', get_include_path());
-        $this->generator_default_path = $paths[1]
+        
+        // Gets default PHP include
+        $this->generator_default_path = array_pop($paths)
             . DIRECTORY_SEPARATOR
             . self::GENERATOR_FILENAME;
     }
@@ -117,11 +138,13 @@ class Inclued
     /**
      *  Generates the CLUE, this method should be called once every inclusions are
      *  done (EOF most of time)
+     * 
      *  @since 1.00
      *  @version 1.00
      *  @access public
+     * 
      *  @param [bool $self_exclude = false] Removes self file inclued data if true
-     *  @return object Inclued instance
+     *  @return $this Inclued instance
      */
     public function genClue($self_exclude = false)
     {
@@ -143,10 +166,12 @@ class Inclued
     
     /**
      *  Returns CLUE datas
+     * 
      *  @since 1.00
      *  @version 1.00
      *  @access public
-     *  @return array CLUE datas
+     * 
+     *  @return array $this->_clue The clue data
      */
     public function getClue()
     {
@@ -155,28 +180,47 @@ class Inclued
     
     /**
      *  Saves the CLUE datas in a CLUE serialized file
+     * 
      *  @since 1.00
-     *  @version 1.00
+     *  @version 1.10
      *  @access public
+     * 
      *  @param [mixed $clue_filename = null] The CLUE filename. Could be a direct
      *  filename or a closure which takes one parameter (the default CLUE filename)
      *  and must return a filename
-     *  @return object Inclued instance
+     *  @param [string $compressor = serialized] The clue data compressor to be
+     *  treated by graph generator. Must be « serialized » or « json ».
+     *  @return $this Inclued instance
+     *  @throws Exception
      */
-    public function saveClue($clue_filename = null)
-    {
+    public function saveClue($clue_filename = null, $compressor = 'serialized')
+    {        
         if (is_callable($clue_filename)) {
             $this->clue_filename = $clue_filename($this->clue_filename);
         }
         
+        if (!in_array($compressor, array('serialized', 'json'))) {
+            throw new Exception('Invalid compressor parameter. Must be « serialized »
+                or « json »!');
+        }
+        
         if (!fopen($this->clue_filename, 'w+')) {
-            throw new Inclued_Exception('Unable to create the CLUE file '
+            throw new Exception('Unable to create the CLUE file '
                 . $this->clue_filename);
         }
         
+        switch ($compressor) {
+            case 'serialized' :
+                $data = serialize($this->_clue);
+                break;
+            case 'json' :
+                $data = json_encode($this->_clue);
+                break;
+        }
+        
         if (!is_writable($this->clue_filename) 
-            || false === file_put_contents($this->clue_filename, serialize($this->_clue))) {
-            throw new Inclued_Exception('Unable to write in the CLUE file '
+            || false === file_put_contents($this->clue_filename, $data)) {
+            throw new Exception('Unable to write in the CLUE file '
                 . $this->clue_filename);
         }
         
@@ -185,16 +229,27 @@ class Inclued
     
     /**
      *  Generates a DOT file from CLUE file and generates a PNG file from DOT file
+     * 
      *  @since 1.00
-     *  @version 1.00
+     *  @version 1.10
      *  @access public
+     * 
+     *  @param [string|closure $ignore_path = __DIR__] The path to ignore in the graph. Should
+     *  be the path from / to all included files (lib directory).
      *  @param [mixed $generator_full_path = null] The absolute path to the generator
      *  file if not found in the PHP include_path. Could be a direct filename or
      *  a closure which has no parameter and must return a filename
-     *  @return object Inclued instance
+     *  @return $this Inclued instance
+     *  @throws Exception
      */
-    public function genGraph($generator_full_path = null)
+    public function genGraph($ignore_path = __DIR__, $generator_full_path = null)
     {
+        if (is_callable($ignore_path)) {
+            $ignore_path = $ignore_path();
+        } elseif (!is_dir($ignore_path)) {
+            $ignore_path = __DIR__;
+        }
+        
         if (is_callable($generator_full_path)) {
             $gen = $generator_full_path();
         } elseif (is_file($generator_full_path)) {
@@ -204,7 +259,7 @@ class Inclued
         }
         
         if (!is_file($gen)) {
-            throw new Inclued_Exception('The '
+            throw new Exception('The '
                 . self::GENERATOR_FILENAME
                 . ' ('
                 . $gen
@@ -212,19 +267,18 @@ class Inclued
         }
         
         if (!is_file($this->clue_filename)) {
-            throw new Inclued_Exception('The CLUE file '
+            throw new Exception('The CLUE file '
                 . $this->clue_filename
                 . ' does not exist!');
         }
         
         // PHP script generator return a default succeed message
-        if (self::GENERATOR_CMD_SUCCEED !== exec(
-            str_replace(
-                array('%gen%', '%clue%'),
-                array($gen, $this->clue_filename),
+        if (self::GENERATOR_CMD_SUCCEED !== exec(str_replace(
+                array('%dir%', '%gen%', '%clue%'),
+                array($ignore_path, $gen, $this->clue_filename),
                 self::GENERATOR_CMD
         ))) {
-            throw new Inclued_Exception('DOT file generation failed!');
+            throw new Exception('DOT file generation failed! Results:' . $result);
         }
     
         // Obtains the PNG filename from the CLUE file
@@ -236,11 +290,21 @@ class Inclued
         if (0 < strlen(exec(
             str_replace('%png%', $png($this->clue_filename), self::GRAPHVIZ_CMD
         )))) {
-            throw new Inclued_Exception('DOT to PNG transformation proccess failed!');
+            throw new Exception('DOT to PNG transformation proccess failed!');
         }
         
         @unlink('~tmp.dot');
+        @unlink($this->clue_filename);
         return $this;
     }
 }
+
+/*
+Filename: Inclued.php
+Date: Thu, 05 Aug 2010 17:03:13 CEST
+Tab size: 4
+Soft tabs: YES
+Column limit: 80
+Word count: 1068
+*/
 ?>
