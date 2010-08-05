@@ -24,12 +24,12 @@ This little class allows you to generate kind of graphic :
     var_dump($clue->getClue());
     ?>
 
-More examples on [http://www.eexit.net/projects/inclued.html](the project page "http://www.eexit.net/projects/inclued.html")
+More examples on [http://www.eexit.net/projects/inclued.html](http://www.eexit.net/projects/inclued.html "the project page")
 
 ## Changelog
 
 ### 2010-08-05 — Version 1.10
-    *  ADDED custom gengraph.php file in the package
+    * ADDED custom gengraph.php file in the package
     * ADDED Exception class has now it own file
     * ADDED parameter in Inclued::saveClue() to choose the way to compress clue datas
     * ADDED parameter in Inclued::genGraph() to avoid printing abspath from root server
