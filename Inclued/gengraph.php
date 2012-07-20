@@ -260,7 +260,13 @@ else /* classes */
 		$class = $v;
 		
         $class['name'] = str_replace('\\', '\\\\', $class['name']);
-        $class['mangled_name'] = str_replace('\\', '\\\\', $class['mangled_name']);
+        
+	if(isset($class['mangled_name'])){
+		$class['mangled_name'] = str_replace('\\', '\\\\', $class['mangled_name']);
+	}
+	else{
+		$class['mangled_name'] = $class['name'];
+	}
 		
 		if(isset($class["mangled_name"]))
 		{
